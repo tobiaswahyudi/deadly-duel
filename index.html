@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<head>
+	<title>Deadly Duel</title>
+	<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+	<script src="game.js"></script>
+	<style src="style.css"></style>
+</head>
+<body>
+	<page id="main-menu">
+		<h1>deadly duel</h1>
+		<br></br>
+		<section id="menu-select">
+			<button onclick="menuSelectHost();">
+				<h3>host a duel</h3>
+			</button>
+			<br></br>
+			<button onclick="menuSelectConnect();">
+				<h3>connect to a duel</h3>
+			</button>
+		</section>
+		<section id="menu-host">
+			<span>Inscribe a connection phrase</span>
+			<input id="connection-phrase-host">
+			<br></br>
+			<span id="phrase-error" style="color: red;"></span>
+			<br></br>
+			<button onclick="menuConnectingHost();">
+				<h3>host duel</h3>
+			</button>
+			<br></br>
+			<button onclick="menuConnectingBack();">
+				<h3>back to menu</h3>
+			</button>
+		</section>
+		<section id="menu-host-waiting">
+			<span>Whisper the connection phrase to your opponent:</span>
+			<h3 id="connection-phrase-display">ur not sposed to c dis</h3>
+			<span>Wait impatiently...</span>
+			<br></br>
+			<button onclick="menuConnectingBack();">
+				<h3>back to menu</h3>
+			</button>
+		</section>
+		<section id="menu-connect">
+			<span>What did your opponent whisper?</span>
+			<input id="connection-phrase-connect">
+			<br></br>
+			<button onclick="menuConnectingConnect();">
+				<h3>connect to duel</h3>
+			</button>
+			<br></br>
+			<button onclick="menuConnectingBack();">
+				<h3>back to menu</h3>
+			</button>
+		</section>
+	</page>
+	<page id="the-game">
+
+	</page>
+	<page id="game-over">
+	</page>
+</body>
+<script>
+	// After page is loaded, do initial page update
+	updateDisplay();
+</script>
