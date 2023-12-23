@@ -1,0 +1,114 @@
+* {
+	font-family: 'Yatra One';
+}
+
+html {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+h1 {
+	font-size: 6rem;
+	font-family: 'Rubik Scribble';
+	text-align: center;
+}
+
+h3 {
+	font-size: 1.5rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+page {
+	flex: 1;
+	height: 100vh;
+	max-width: 64rem;
+	padding: 4rem;
+	box-sizing: border-box;
+}
+
+button {
+	width: 100%;
+}
+
+input {
+	font-size: 2em;
+	padding: 0.4em;
+}
+
+.h-flex {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.character {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.bar-align {
+	flex: 0 0 2em;
+	display: flex;
+	flex-direction: row;
+	padding: 0 2em;
+	width: 100%;
+	box-sizing: border-box;
+	align-items: center;
+	margin: 0 0 0.5em; 
+}
+
+.bar-outer {
+	flex: 1;
+	height: 2em;
+	width: 60%;
+	margin: 0 0.5em 0 0; 
+	padding: 0.2em;
+	box-sizing: border-box;
+	background: #bbbbbb;
+}
+
+.bar-label {
+	flex: 0;
+}
+
+.hpbar {
+	width: 100%;
+	height: 100%;
+	background: #c52626;
+}
+
+.energybar {
+	width: 100%;
+	height: 100%;
+	background: #7af7b2;
+}
+
+.move-option {
+	flex: 1;
+	font-size: 1rem;
+	height: 5em;
+	max-width: 5em;
+}
+
+.attack-label {
+	text-align: center;
+	box-sizing: border-box;
+	padding: 0.5rem 0;
+	font-size: 1.2em;
+}

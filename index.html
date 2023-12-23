@@ -3,11 +3,14 @@
 	<title>Deadly Duel</title>
 	<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 	<script src="game.js"></script>
-	<style src="style.css"></style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Rubik+Scribble&family=Yatra+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css"></link>
 </head>
 <body>
-	<page id="main-menu">
-		<h1>deadly duel</h1>
+	<page id="menu">
+		<h1>Deadly Duel!</h1>
 		<br></br>
 		<section id="menu-select">
 			<button onclick="menuSelectHost();">
@@ -19,7 +22,7 @@
 			</button>
 		</section>
 		<section id="menu-host">
-			<span>Inscribe a connection phrase</span>
+			<h3>Inscribe a connection phrase</h3>
 			<input id="connection-phrase-host">
 			<br></br>
 			<span id="phrase-error" style="color: red;"></span>
@@ -33,17 +36,18 @@
 			</button>
 		</section>
 		<section id="menu-host-waiting">
-			<span>Whisper the connection phrase to your opponent:</span>
-			<h3 id="connection-phrase-display">ur not sposed to c dis</h3>
-			<span>Wait impatiently...</span>
+			<h3>Whisper the connection phrase to your opponent:</h3>
+			<h2 id="connection-phrase-display">ur not sposed to c dis</h2>
+			<h3>Wait impatiently...</h3>
 			<br></br>
 			<button onclick="menuConnectingBack();">
 				<h3>back to menu</h3>
 			</button>
 		</section>
 		<section id="menu-connect">
-			<span>What did your opponent whisper?</span>
+			<h3>Enter the secret connection phrase:</h3>
 			<input id="connection-phrase-connect">
+			<span id="connection-status"></span>
 			<br></br>
 			<button onclick="menuConnectingConnect();">
 				<h3>connect to duel</h3>
@@ -54,10 +58,91 @@
 			</button>
 		</section>
 	</page>
-	<page id="the-game">
-
-	</page>
-	<page id="game-over">
+	<page id="game">
+		<div class="h-flex">
+			<div class="character">
+				<h3 id="my-name">&nbsp;</h3>
+				<div class="bar-align">
+					<div class="bar-outer">
+						<div class="hpbar" id="my-hp"></div>
+					</div>
+					<span class="bar-meter" id="my-hp-label">10/10<span>
+				</div>
+				<div class="bar-align">
+					<div class="bar-outer">
+						<div class="energybar" id="my-energy"></div>
+					</div>
+					<span class="bar-meter" id="my-energy-label">10/10<span>
+				</div>
+				<canvas width="300" height="400" id="my-canvas">
+					I'll figure this out later...
+				</canvas>
+			</div>
+			<div class="character">
+				<h3 id="opp-name">&nbsp;</h3>
+				<div class="bar-align">
+					<div class="bar-outer">
+						<div class="hpbar" id="opp-hp"></div>
+					</div>
+					<span class="bar-meter" id="opp-hp-label">10/10<span>
+				</div>
+				<div class="bar-align">
+					<div class="bar-outer">
+						<div class="energybar" id="opp-energy"></div>
+					</div>
+					<span class="bar-meter" id="opp-energy-label">10/10<span>
+				</div>
+				<canvas width="300" height="400" id="opp-canvas">
+					I'll figure this out later...
+				</canvas>
+			</div>
+		</div>
+		<section id="enter-name">
+			<h3>Identify yourself:</h3>
+			<input id="my-name-input">
+			<br></br>
+			<button onclick="sendName();">
+				<h3>Yep that's me</h3>
+			</button>
+		</section>
+		<section id="waiting-name">
+			<h3>May luck favor you,</h3>
+			<h2 id="my-name-display">ur not supposed to see this</h2>
+			<br>
+			<h3>Wait impatiently for your opponent's identity...</h3>
+		</section>
+		<section id="make-move">
+			<h3>Make an action:</h3>
+			<div class="h-flex">
+				<div class="attack-label" style="flex:1;max-width: 5rem;background:#b9ebda;">Dodge</div>
+				<div class="attack-label" style="flex:3;max-width: 15rem;background:#bbdfff;">Quick Attack</div>
+				<div class="attack-label" style="flex:5;max-width: 25rem;background:#e6c4f7;">Heavy Attack</div>
+			</div>
+			<div id="move-options" class="h-flex">
+				<button class="move-option" onclick="sendMove(0);">0</button>
+				<button class="move-option" onclick="sendMove(1);">1</button>
+				<button class="move-option" onclick="sendMove(2);">2</button>
+				<button class="move-option" onclick="sendMove(3);">3</button>
+				<button class="move-option" onclick="sendMove(4);">4</button>
+				<button class="move-option" onclick="sendMove(5);">5</button>
+				<button class="move-option" onclick="sendMove(6);">6</button>
+				<button class="move-option" onclick="sendMove(7);">7</button>
+				<button class="move-option" onclick="sendMove(8);">8</button>
+			</div>
+		</section>
+		<section id="waiting-move">
+			<h3>Your next move is:</h3>
+			<h2 id="my-move-display">ur not supposed to see this</h2>
+			<br>
+			<h3>Wait impatiently for your opponent to decide...</h3>
+		</section>
+		<section id="move-animation">
+			<h2>WOAH SOMETHING HAPPENED</h2>
+		</section>
+		<section id="game-over">
+			<h2 id="duel-outcome">duel outcome</h2>
+			<h3>Refresh to start another duel</h3>
+		</section>
 	</page>
 </body>
 <script>
