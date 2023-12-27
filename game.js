@@ -3,57 +3,8 @@
 *       December 23, 2023
 * 
 * Designed by Maximillian Aurelius
-* Programmed by B. Tobias Wahyudi (drunk, overnight)
+* Written by B. Tobias Wahyudi
 **************************************/
-
-/**************************************
-* Global State
-*
-* Trying to maintain a unidirectional data loop:
-* State -> View -> State-Updaters (Controllers) -> State
-**************************************/
-const gameState = {
-	// main menu
-	screen: 'menu',
-	menu: {
-		state: "menu-select",
-	},
-	// options
-	options: {
-		magicBattle: false,
-		visibleHp: false,
-	},
-	// peerjs
-	peerjs: {
-		peer: new Peer(),
-		connId: null,
-		conn: null,
-		lastMessageTimestamp: null,
-	},
-	// running game
-	game: {
-		state: 'enter-name',
-		myName: null,
-		oppName: null,
-		myMove: null,
-		oppMove: null,
-		myHp: 10,
-		myEnergy: 10,
-		animationStartTimestamp: null,
-	}
-}
-
-const hitMatrix = [
-	[0, 0, 0, 0, 0, 0, 0, 0, 0], 
-	[2, 0, 0, 0, 0, 0, 0, 0, 0], 
-	[4, 1, 0, 0, 0, 0, 0, 0, 0], 
-	[6, 1, 1, 0, 0, 0, 0, 0, 0], 
-	[0, 3, 2, 1, 1, 0, 0, 0, 0], 
-	[0, 4, 3, 2, 1, 1, 0, 0, 0], 
-	[0, 5, 4, 3, 2, 1, 2, 0, 0], 
-	[0, 6, 5, 4, 3, 2, 1, 2, 0], 
-	[0, 7, 6, 5, 4, 3, 2, 1, 3]
-]
 
 /**************************************
 * View
@@ -193,8 +144,7 @@ function computeMove() {
 	const myMove = gameState.game.myMove;
 	const oppMove = gameState.game.oppMove;
 
-	const dmgReceived = hitMatrix[oppMove][myMove];
-	const energyCost = myMove;
+	const dmgReceived = outcomeDamage(myMove, oppMove);
 
 	gameState.game.myHp -= dmgReceived;
 	gameState.game.myEnergy -= myMove;
@@ -214,12 +164,14 @@ function computeMove() {
 
 	gameState.game.state = 'move-animation';
 	gameState.game.animationStartTimestamp = new Date().getTime();
+
+	document.getElementById('outcome-label').innerText = outcomeLabel(myMove, oppMove);
 	requestAnimationFrame(animateMove);
 }
 
 function animateMove() {
 	// do stuff here idk
-	if(new Date().getTime() - gameState.game.animationStartTimestamp > 1000) {
+	if(new Date().getTime() - gameState.game.animationStartTimestamp > 2000) {
 		startMove();
 	} else {
 		requestAnimationFrame(animateMove);

@@ -2,6 +2,8 @@
 <head>
 	<title>Deadly Duel</title>
 	<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+	<script src="state.js"></script>
+	<script src="hit-calculation.js"></script>
 	<script src="game.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,7 +139,7 @@
 			<h3>Wait impatiently for your opponent to decide...</h3>
 		</section>
 		<section id="move-animation">
-			<h2>WOAH SOMETHING HAPPENED</h2>
+			<h2 id="outcome-label">WOAH SOMETHING HAPPENED</h2>
 		</section>
 		<section id="game-over">
 			<h2 id="duel-outcome">duel outcome</h2>
