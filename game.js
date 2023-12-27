@@ -229,7 +229,7 @@ function menuConnectingHost() {
 
 function menuConnectingConnect() {
 	const oppId = document.getElementById('connection-phrase-connect').value;
-	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId);
+	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
 	gameState.peerjs.peer.on('error', console.error);
 	console.log("My peer id is ", gameState.peerjs.peer.id);
 	console.log(gameState.peerjs.conn);
