@@ -150,6 +150,9 @@ function computeMove() {
 	gameState.game.myEnergy -= myMove;
 	gameState.game.myEnergy += Math.floor(gameState.game.myHp/2);
 
+	// Limit the maximum energy to 10
+	gameState.game.myEnergy = Math.min(gameState.game.myEnergy, 10);
+
 	if(gameState.game.myHp <= 0) {
 		if(gameState.game.myHp < 0) gameState.game.myHp = 0;
 		gameState.peerjs.conn.send("I lost");
