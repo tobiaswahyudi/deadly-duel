@@ -18,6 +18,11 @@ function setTextForId(id, text) {
   document.getElementById(id).innerText = text;
 }
 
+// Gets the value from the input element whose id is specified.
+function getInputValue(id) {
+  return document.getElementById(id).value;
+}
+
 /**************************************
 * Page Updaters
 **************************************/

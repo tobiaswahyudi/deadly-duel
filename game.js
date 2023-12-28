@@ -9,21 +9,18 @@
 /*********************************************
 * Game Control 
 *********************************************/
-// Shortcut for brevity
+
+// Set a peerjs data callback that optionally only runs once.
 function nextData(cb, once = false) {
-	gameState.peerjs.conn.on('data', data => {
-		console.log("pjs data", cb, data);
-		cb(data);
-	});
+	gameState.peerjs.conn.on('data', cb);
 	gameState.peerjs.conn._events.data.once = once;
-	console.log(gameState.peerjs.conn._events.data);
 }
 
 
 // Register Name
 function sendName() {
 	// TODO: Really should do this with <form>
-	const name = document.getElementById('my-name-input').value;
+	const name = getInputValue('my-name-input');
 
 	gameState.game.myName = name;
 	gameState.peerjs.conn.send(name);
@@ -100,20 +97,24 @@ function computeMove() {
 
 	updateDisplay();
 
-	gameState.game.state = 'move-animation';
+	gameState.game.state = 'move-outcome';
 	gameState.game.animationStartTimestamp = new Date().getTime();
 
 	document.getElementById('outcome-label').innerText = outcomeLabel(myMove, oppMove);
-	requestAnimationFrame(animateMove);
+	// requestAnimationFrame(animateMove);
 }
 
-function animateMove() {
-	// do stuff here idk
-	if(new Date().getTime() - gameState.game.animationStartTimestamp > 2000) {
-		startMove();
-	} else {
-		requestAnimationFrame(animateMove);
-	}
+// function animateMove() {
+// 	// do stuff here idk
+// 	if(new Date().getTime() - gameState.game.animationStartTimestamp > 2000) {
+// 		startMove();
+// 	} else {
+// 		requestAnimationFrame(animateMove);
+// 	}
+// }
+
+function gameOutcomeNext() {
+	startMove();
 }
 
 function duelOver() {
@@ -142,7 +143,7 @@ function menuConnectingBack() {
 }
 
 function menuConnectingHost() {
-	const selfId = document.getElementById('connection-phrase-host').value;
+	const selfId = getInputValue('connection-phrase-host');
 	if(selfId.length < 16) {
 		document.getElementById('phrase-error').innerText = 'please forge a phrase at least 16 characters in length';
 		return;
@@ -166,7 +167,7 @@ function menuConnectingHost() {
 }
 
 function menuConnectingConnect() {
-	const oppId = document.getElementById('connection-phrase-connect').value;
+	const oppId = getInputValue('connection-phrase-connect');
 	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
 	gameState.peerjs.peer.on('error', console.error);
 	console.log("My peer id is ", gameState.peerjs.peer.id);
