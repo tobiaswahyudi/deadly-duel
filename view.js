@@ -55,6 +55,7 @@ function updateGameScreen(gamePage) {
         The score is ${gameState.game.me.winCount} (you) vs ${gameState.game.opponent.winCount} (them)`;
       }
     })();
+    setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} Results:`);
     setTextForId('duel-outcome', gameOverLabel);
 
     document.getElementById("send-rematch").disabled = gameState.game.me.wantRematch;
@@ -63,11 +64,13 @@ function updateGameScreen(gamePage) {
     moveOptions.forEach((opt, idx) => {
       opt.disabled = (idx > gameState.game.me.energy);
     });
+
+    setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} - Round ${gameState.game.roundNumber}`);
   }
-  setTextForId('my-name', gameState.game.me.name || "???");
-  setTextForId('my-name-display', gameState.game.me.name || "???");
-  setTextForId('opp-name', gameState.game.opponent.name || "???");	
-  setTextForId('my-move-display', gameState.game.me.move);
+  setTextForId('my-name-display', gameState.game.me.name);
+  if(gameState.game.me.name) setTextForId('my-name', gameState.game.me.name);
+  if(gameState.game.opponent.name) setTextForId('opp-name', gameState.game.opponent.name);	
+  setTextForId('my-move-display', `${ACTION_LABELS[actionType(gameState.game.me.move)]} (${gameState.game.me.move})`);
 
   document.getElementById('my-hp').style.width = `${gameState.game.me.hp}0%`;
   setTextForId('my-hp-label', `${gameState.game.me.hp}/10`);

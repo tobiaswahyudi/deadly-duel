@@ -25,6 +25,7 @@ const gameState = {
         // running game
         game: {
                 state: 'enter-name',
+                duelNumber: 1,
                 roundNumber: 1,
                 me: {
                         name: null,

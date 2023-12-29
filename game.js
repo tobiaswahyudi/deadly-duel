@@ -109,12 +109,14 @@ function gameOver() {
 
 // After receiving rematch request
 function receiveRematch() {
+	gameState.game.duelNumber += 1;
 	if(gameState.game.me.wantRematch && gameState.game.opponent.wantRematch) {
 		startDuel();
 	}
 }
 
 function sendRematch() {
+	gameState.game.duelNumber += 1;
 	gameState.game.me.wantRematch = true;
 	sendPlayerData("rematch");
 	updateDisplay();
