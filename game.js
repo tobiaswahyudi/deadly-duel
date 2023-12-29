@@ -201,6 +201,9 @@ function menuConnectingHost() {
 }
 
 function menuConnectingConnect() {
+
+	document.getElementById("duel-connect").disabled = true;
+
 	const oppId = getInputValue('connection-phrase-connect');
 	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
 	gameState.peerjs.peer.on('error', console.error);
