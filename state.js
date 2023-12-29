@@ -25,6 +25,7 @@ const gameState = {
         // running game
         game: {
                 state: 'enter-name',
+                roundNumber: 1,
                 me: {
                         name: null,
                         hp: 10,

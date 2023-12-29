@@ -22,6 +22,8 @@ function startDuel() {
 	gameState.game.me = {...gameState.game.me, ...resetPlayer};
 	gameState.game.opponent = {...gameState.game.opponent, ...resetPlayer};
 
+	gameState.game.roundNumber = 1;
+
 	// Even if the game was over before, force the game to start
 	gameState.game.state = 'make-move';
 	startMove();
@@ -143,12 +145,12 @@ function receiveData(playerData) {
 	}
 }
 
-function moveForPlayer(player, theirMove, otherMove) {
+function moveForPlayer(roundNumber, player, theirMove, otherMove) {
 	const dmgReceived = outcomeDamage(theirMove, otherMove);
 
 	player.hp -= dmgReceived;
 	player.hp = Math.max(player.hp, 0);
-	player.energy += Math.floor(player.hp/2) - theirMove;
+	player.energy += Math.floor(roundNumber/2) - theirMove;
 	player.energy = Math.min(player.energy, 10);
 }
 
@@ -157,8 +159,10 @@ function computeMove() {
 	const myMove = gameState.game.me.move;
 	const oppMove = gameState.game.opponent.move;
 
-	moveForPlayer(gameState.game.me, myMove, oppMove);
-	moveForPlayer(gameState.game.opponent, oppMove, myMove);
+	moveForPlayer(gameState.game.roundNumber, gameState.game.me, myMove, oppMove);
+	moveForPlayer(gameState.game.roundNumber,gameState.game.opponent, oppMove, myMove);
+
+	gameState.game.roundNumber += 1;
 
 	if(gameState.game.me.hp == 0 || gameState.game.opponent.hp == 0) {
 		// No further communication, unless rematch is sent
@@ -172,7 +176,9 @@ function computeMove() {
 	gameState.game.state = 'move-outcome';
 	gameState.game.animationStartTimestamp = new Date().getTime();
 	
-	document.getElementById('outcome-label').innerText = outcomeLabel(myMove, oppMove);
+	document.getElementById('outcome-label').innerText = `${outcomeLabel(myMove, oppMove)}
+	
+	You recovered ${Math.floor(gameState.game.roundNumber/2)} energy.`;
 	updateDisplay();
 }
 

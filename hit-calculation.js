@@ -29,8 +29,8 @@ const OUTCOME_LABELS = {
 	[ACTION_TYPES.ACTION_QUICK]: {
 		RPS_WIN: "You attack quickly past their defenses, slashing for {myDmg} hp.",
 		RPS_LOSE: "You rush directly into their heavy swing. You are slashed for {oppDmg} hp.",
-		ENERGY_WIN: "They dash for an attack but your counter is quicker, hitting them for {myDmg} hp.",
-		ENERGY_LOSE: "You attempt a quick attack, but they are faster. You are injured for {oppDmg} hp.",
+		ENERGY_WIN: "You both rush in, countering each other's attack. No damage is dealt.",
+		ENERGY_LOSE: "You both rush in, countering each other's attack. No damage is dealt.",
 		ENERGY_TIED: "You both rush in, countering each other's attack. No damage is dealt."
 	},
 	[ACTION_TYPES.ACTION_HEAVY]: {
@@ -48,14 +48,14 @@ const OUTCOME_LABELS = {
 
 const HIT_MATRIX = [
 	[0, 2, 4, 6, 0, 0, 0, 0, 0],
-	[0, 0, 1, 1, 3, 4, 5, 6, 7],
-	[0, 0, 0, 1, 2, 3, 4, 5, 6],
-	[0, 0, 0, 0, 1, 2, 3, 4, 5],
-	[0, 0, 0, 0, 1, 1, 2, 3, 4],
-	[0, 0, 0, 0, 0, 1, 1, 2, 3],
-	[0, 0, 0, 0, 0, 0, 2, 1, 2],
-	[0, 0, 0, 0, 0, 0, 0, 2, 1],
-	[0, 0, 0, 0, 0, 0, 0, 0, 3]
+	[0, 0, 0, 0, 4, 5, 6, 7, 8],
+	[0, 0, 0, 0, 4, 5, 6, 7, 8],
+	[0, 0, 0, 0, 4, 5, 6, 7, 8],
+	[0, 0, 0, 0, 2, 1, 2, 3, 4],
+	[0, 0, 0, 0, 0, 2, 1, 2, 3],
+	[0, 0, 0, 0, 0, 0, 3, 1, 2],
+	[0, 0, 0, 0, 0, 0, 0, 3, 1],
+	[0, 0, 0, 0, 0, 0, 0, 0, 4]
 ]
 
 function outcomeDamage(defender, attacker) {
