@@ -25,12 +25,22 @@ const gameState = {
         // running game
         game: {
                 state: 'enter-name',
-                myName: null,
-                oppName: null,
-                myMove: null,
-                oppMove: null,
-                myHp: 10,
-                myEnergy: 10,
+                me: {
+                        name: null,
+                        hp: 10,
+                        energy: 10,
+                        move: null,
+                        wantRematch: null,
+                        winCount: 0,
+                },
+                opponent: {
+                        name: null,
+                        hp: 10,
+                        energy: 10,
+                        move: null,
+                        wantRematch: null,
+                        winCount: 0,
+                },
                 animationStartTimestamp: null,
         }
 }

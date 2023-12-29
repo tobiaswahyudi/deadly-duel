@@ -36,34 +36,46 @@ function updateGameScreen(gamePage) {
   
   if(gameState.game.state == 'game-over') {
     const gameOverLabel = (() => {
-      if(gameState.game.oppMove == "I lost") {
+      if(gameState.game.opponent.move == "I lost") {
         if(gameState.game.hp <= 0) {
           // Tied
-          return "The duel ended in a tie. You are both dead losers.";
+          return `The duel ended in a tie. You are both dead losers.
+          
+          The score is ${gameState.game.me.winCount} (you) vs ${gameState.game.opponent.winCount} (them)`;
         } else {
           // Win
-          return "The duel ended in your victory! Your pathetic opponent is defeated.";
+          return `The duel ended in your victory! Your pathetic opponent is defeated.
+          
+          The score is ${gameState.game.me.winCount} (you) vs ${gameState.game.opponent.winCount} (them)`;
         }
       } else {
         // Lost
-        return "The duel ended in your defeat. Even your corpse looks sad.";
+        return `The duel ended in your defeat. Even your corpse looks sad.
+        
+        The score is ${gameState.game.me.winCount} (you) vs ${gameState.game.opponent.winCount} (them)`;
       }
     })();
     setTextForId('duel-outcome', gameOverLabel);
   } else {
     const moveOptions = [...document.getElementById('move-options').children]
     moveOptions.forEach((opt, idx) => {
-      if(idx > gameState.game.myEnergy) opt.disabled = 'true';
+      if(idx > gameState.game.me.energy) opt.disabled = 'true';
     });
   }
-  setTextForId('my-name', gameState.game.myName || "\u00A0");
-  setTextForId('my-name-display', gameState.game.myName || "\u00A0");
-  setTextForId('opp-name', gameState.game.oppName || "\u00A0");	
-  setTextForId('my-move-display', gameState.game.myMove);
-  document.getElementById('my-hp').style.width = `${gameState.game.myHp}0%`;
-  setTextForId('my-hp-label', `${gameState.game.myHp}/10`);
-  document.getElementById('my-energy').style.width = `${gameState.game.myEnergy}0%`;
-  setTextForId('my-energy-label', `${gameState.game.myEnergy}/10`);
+  setTextForId('my-name', gameState.game.me.name || "\u00A0");
+  setTextForId('my-name-display', gameState.game.me.name || "\u00A0");
+  setTextForId('opp-name', gameState.game.opponent.name || "\u00A0");	
+  setTextForId('my-move-display', gameState.game.me.move);
+
+  document.getElementById('my-hp').style.width = `${gameState.game.me.hp}0%`;
+  setTextForId('my-hp-label', `${gameState.game.me.hp}/10`);
+  document.getElementById('my-energy').style.width = `${gameState.game.me.energy}0%`;
+  setTextForId('my-energy-label', `${gameState.game.me.energy}/10`);
+
+  document.getElementById('opp-hp').style.width = `${gameState.game.opponent.hp}0%`;
+  setTextForId('opp-hp-label', `${gameState.game.opponent.hp}/10`);
+  document.getElementById('opp-energy').style.width = `${gameState.game.opponent.energy}0%`;
+  setTextForId('opp-energy-label', `${gameState.game.opponent.energy}/10`);
 }
 
 // Menu Screen

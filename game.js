@@ -10,116 +10,150 @@
 * Game Control 
 *********************************************/
 
-// Set a peerjs data callback that optionally only runs once.
-function nextData(cb, once = false) {
-	gameState.peerjs.conn.on('data', cb);
-	gameState.peerjs.conn._events.data.once = once;
+// Starts a duel. Because of rematches, one game can have multiple duels.
+function startDuel() {
+	gameState.game.state = 'enter-name';
+	const resetPlayer = {
+		hp: 10,
+		energy: 10,
+		move: null,
+		wantRematch: 0
+	};
+
+	gameState.game.me = {...gameState.game.me, ...resetPlayer};
+	gameState.game.opponent = {...gameState.game.opponent, ...resetPlayer};
 }
 
+function sendPlayerData(action) {
+	const data = {
+		action: action,
+		player: gameState.game.me
+	}
 
-// Register Name
+	gameState.peerjs.conn.send(data);
+}
+
+// Send Name
 function sendName() {
 	// TODO: Really should do this with <form>
 	const name = getInputValue('my-name-input');
 
-	gameState.game.myName = name;
-	gameState.peerjs.conn.send(name);
-	if(gameState.game.oppName) {
-		nextData(receiveMove);
+	gameState.game.me.name = name || "blank";
+
+	sendPlayerData("name");
+
+	if(gameState.game.opponent.name) {
 		startMove();
 	} else {
 		gameState.game.state = 'waiting-name';
+		updateDisplay();
 	}
-	updateDisplay();
 }
 
-function receiveOppName(name) {
-	gameState.game.oppName = name;
-	if(gameState.game.myName) {
-		nextData(receiveMove);
+// After receiving opponent name
+function receiveName() {
+	if(gameState.game.me.name) {
 		startMove();
+	} else {
+		updateDisplay();
+	}
+}
+
+// Start duel round
+function startMove() {
+	if(gameState.game.state != 'game-over') {
+		gameState.game.state = 'make-move';
 	}
 	updateDisplay();
 }
 
-// Duel
-function startMove() {
-	if(gameState.game.state == 'game-over') return;
-	gameState.game.state = 'make-move';
-	updateDisplay();
-}
-
+// Send move decision to other player
 function sendMove(move) {
-	gameState.game.myMove = move;
-	gameState.peerjs.conn.send(move);
-	if(gameState.game.oppMove != null) {
-		computeMove();
+	gameState.game.me.move = move;
+
+	sendPlayerData("move");
+
+	if(gameState.game.opponent.move != null) {
+		// This races with sendPlayerData to set gameState.game.me.move to null.
+		setTimeout(computeMove, 10);
 	} else {
 		gameState.game.state = 'waiting-move';
+		updateDisplay();
 	}
-	updateDisplay();
 }
 
-function receiveMove(move) {
-	gameState.game.oppMove = move;
-	if(move == "I lost") {
-		duelOver();
-		return;
-	}
-	if(gameState.game.myMove != null) {
+// After receiving opponent move
+function receiveMove() {
+	if(gameState.game.me.move != null) {
 		computeMove();
+	} else {
+		updateDisplay();
 	}
+}
+
+// After receiving opponent's game over declaration
+function gameOver() {
+	gameState.game.state = 'game-over';
+
+	if(gameState.game.opponent.hp == 0) gameState.game.me.winCount++;
+	if(gameState.game.me.hp == 0) gameState.game.opponent.winCount++;
+
 	updateDisplay();
 }
 
+
+function receiveData(playerData) {
+	const action = playerData.action;
+
+	gameState.game.opponent = playerData.player;
+
+	switch(action) {
+		case "name":{
+			receiveName();
+			break;
+		}
+		case "move":{
+			receiveMove();
+			break;
+		}
+	}
+}
+
+function moveForPlayer(player, theirMove, otherMove) {
+	const dmgReceived = outcomeDamage(theirMove, otherMove);
+
+	player.hp -= dmgReceived;
+	player.hp = Math.max(player.hp, 0);
+	player.energy += Math.floor(player.hp/2) - theirMove;
+	player.energy = Math.min(player.energy, 10);
+}
+
+// Once both players have decided, process the move outcome
 function computeMove() {
-	const myMove = gameState.game.myMove;
-	const oppMove = gameState.game.oppMove;
+	const myMove = gameState.game.me.move;
+	const oppMove = gameState.game.opponent.move;
 
-	const dmgReceived = outcomeDamage(myMove, oppMove);
+	moveForPlayer(gameState.game.me, myMove, oppMove);
+	moveForPlayer(gameState.game.opponent, oppMove, myMove);
 
-	gameState.game.myHp -= dmgReceived;
-	gameState.game.myEnergy -= myMove;
-	gameState.game.myEnergy += Math.floor(gameState.game.myHp/2);
-
-	// Limit the maximum energy to 10
-	gameState.game.myEnergy = Math.min(gameState.game.myEnergy, 10);
-
-	if(gameState.game.myHp <= 0) {
-		if(gameState.game.myHp < 0) gameState.game.myHp = 0;
-		gameState.peerjs.conn.send("I lost");
-		duelOver();
+	if(gameState.game.me.hp == 0 || gameState.game.opponent.hp == 0) {
+		// No further communication, unless rematch is sent
+		gameOver();
 		return;
 	}
 
-	gameState.game.myMove = null;
-	gameState.game.oppMove = null;
-
-	updateDisplay();
+	gameState.game.me.move = null;
+	gameState.game.opponent.move = null;
 
 	gameState.game.state = 'move-outcome';
 	gameState.game.animationStartTimestamp = new Date().getTime();
-
+	
 	document.getElementById('outcome-label').innerText = outcomeLabel(myMove, oppMove);
-	// requestAnimationFrame(animateMove);
+	updateDisplay();
 }
-
-// function animateMove() {
-// 	// do stuff here idk
-// 	if(new Date().getTime() - gameState.game.animationStartTimestamp > 2000) {
-// 		startMove();
-// 	} else {
-// 		requestAnimationFrame(animateMove);
-// 	}
-// }
 
 function gameOutcomeNext() {
 	startMove();
-}
-
-function duelOver() {
-	gameState.game.state = 'game-over';
-	updateDisplay();
 }
 
 /*********************************************
@@ -174,22 +208,17 @@ function menuConnectingConnect() {
 	console.log(gameState.peerjs.conn);
 
 
-	gameState.peerjs.conn.on('open', () => {
-		console.log("Connected to peer ", gameState.peerjs.conn.peer);
-
-		gameState.peerjs.lastMessageTimestamp = new Date().getTime();
-		gameState.screen = 'game';
-		startGame();
-		updateDisplay();
-	});
+	gameState.peerjs.conn.on('open', startGame);
 }
 
-// Start the game; Set up first listeners
+// Start the game; Set up first listeners.
+// A game starts when the player connects to the opponent and ends when they close the tab.
 function startGame() {
 	console.log("Connected to peer ", gameState.peerjs.conn.peer);
 	gameState.peerjs.lastMessageTimestamp = new Date().getTime();
 	gameState.screen = 'game';
-	nextData(receiveOppName, true);
+	nextData(receiveData);
+	startDuel();
 	updateDisplay();
 }
 
