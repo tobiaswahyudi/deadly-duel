@@ -36,8 +36,8 @@ function updateGameScreen(gamePage) {
   
   if(gameState.game.state == 'game-over') {
     const gameOverLabel = (() => {
-      if(gameState.game.opponent.move == "I lost") {
-        if(gameState.game.hp <= 0) {
+      if(gameState.game.opponent.hp == 0) {
+        if(gameState.game.hp == 0) {
           // Tied
           return `The duel ended in a tie. You are both dead losers.
           
@@ -59,7 +59,7 @@ function updateGameScreen(gamePage) {
   } else {
     const moveOptions = [...document.getElementById('move-options').children]
     moveOptions.forEach((opt, idx) => {
-      if(idx > gameState.game.me.energy) opt.disabled = 'true';
+      opt.disabled = (idx > gameState.game.me.energy);
     });
   }
   setTextForId('my-name', gameState.game.me.name || "\u00A0");
