@@ -12,7 +12,6 @@
 
 // Starts a duel. Because of rematches, one game can have multiple duels.
 function startDuel() {
-	gameState.game.state = 'enter-name';
 	const resetPlayer = {
 		hp: 10,
 		energy: 10,
@@ -22,6 +21,10 @@ function startDuel() {
 
 	gameState.game.me = {...gameState.game.me, ...resetPlayer};
 	gameState.game.opponent = {...gameState.game.opponent, ...resetPlayer};
+
+	// Even if the game was over before, force the game to start
+	gameState.game.state = 'make-move';
+	startMove();
 }
 
 function sendPlayerData(action) {
@@ -43,7 +46,7 @@ function sendName() {
 	sendPlayerData("name");
 
 	if(gameState.game.opponent.name) {
-		startMove();
+		startDuel();
 	} else {
 		gameState.game.state = 'waiting-name';
 		updateDisplay();
@@ -61,6 +64,7 @@ function receiveName() {
 
 // Start duel round
 function startMove() {
+	// Prevent race
 	if(gameState.game.state != 'game-over') {
 		gameState.game.state = 'make-move';
 	}
@@ -101,11 +105,28 @@ function gameOver() {
 	updateDisplay();
 }
 
+// After receiving rematch request
+function receiveRematch() {
+	if(gameState.game.me.wantRematch && gameState.game.opponent.wantRematch) {
+		startDuel();
+	}
+}
+
+function sendRematch() {
+	gameState.game.me.wantRematch = true;
+	sendPlayerData("rematch");
+	updateDisplay();
+	
+	if(gameState.game.me.wantRematch && gameState.game.opponent.wantRematch) {
+		startDuel();
+	}
+}
 
 function receiveData(playerData) {
 	const action = playerData.action;
 
 	gameState.game.opponent = playerData.player;
+	console.log(playerData);
 
 	switch(action) {
 		case "name":{
@@ -115,6 +136,9 @@ function receiveData(playerData) {
 		case "move":{
 			receiveMove();
 			break;
+		}
+		case "rematch": {
+			receiveRematch();
 		}
 	}
 }
@@ -221,7 +245,6 @@ function startGame() {
 	gameState.peerjs.lastMessageTimestamp = new Date().getTime();
 	gameState.screen = 'game';
 	nextData(receiveData);
-	startDuel();
 	updateDisplay();
 }
 

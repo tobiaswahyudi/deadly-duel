@@ -37,7 +37,7 @@ function updateGameScreen(gamePage) {
   if(gameState.game.state == 'game-over') {
     const gameOverLabel = (() => {
       if(gameState.game.opponent.hp == 0) {
-        if(gameState.game.hp == 0) {
+        if(gameState.game.me.hp == 0) {
           // Tied
           return `The duel ended in a tie. You are both dead losers.
           
@@ -56,15 +56,17 @@ function updateGameScreen(gamePage) {
       }
     })();
     setTextForId('duel-outcome', gameOverLabel);
+
+    document.getElementById("send-rematch").disabled = gameState.game.me.wantRematch;
   } else {
     const moveOptions = [...document.getElementById('move-options').children]
     moveOptions.forEach((opt, idx) => {
       opt.disabled = (idx > gameState.game.me.energy);
     });
   }
-  setTextForId('my-name', gameState.game.me.name || "\u00A0");
-  setTextForId('my-name-display', gameState.game.me.name || "\u00A0");
-  setTextForId('opp-name', gameState.game.opponent.name || "\u00A0");	
+  setTextForId('my-name', gameState.game.me.name || "???");
+  setTextForId('my-name-display', gameState.game.me.name || "???");
+  setTextForId('opp-name', gameState.game.opponent.name || "???");	
   setTextForId('my-move-display', gameState.game.me.move);
 
   document.getElementById('my-hp').style.width = `${gameState.game.me.hp}0%`;
