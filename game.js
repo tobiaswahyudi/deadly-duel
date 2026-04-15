@@ -204,7 +204,7 @@ function menuSelectConnect() {
 function menuConnectingBack() {
 	gameState.menu.state = 'menu-select';
 	// reset listeners
-	gameState.peerjs.peer = new Peer(undefined, peerJsConfig);
+	gameState.peerjs.peer = new Peer();
 	updateDisplay();
 }
 
@@ -218,7 +218,7 @@ function menuConnectingHost() {
 	}
 
 	gameState.peerjs.selfId = selfId;
-	gameState.peerjs.peer = new Peer(selfId, peerJsConfig);
+	gameState.peerjs.peer = new Peer(selfId);
 	
 	gameState.peerjs.peer.on('error', console.error);
 	console.log("My peer id is ", gameState.peerjs.peer.id);
