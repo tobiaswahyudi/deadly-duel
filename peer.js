@@ -31,21 +31,22 @@ async function initializePeer(id) {
 		const response = await fetch(`https://peerjs.wahyudi.ca:9000/ice-config?id=${myId}`);
 		const iceConfig = await response.json();
 		console.log('Ice config: ', iceConfig);
+		
+		// 2. Start PeerJS
+		const peer = new Peer(myId, {
+		  host: 'peerjs.wahyudi.ca',
+		  port: 9000,
+		  path: '/peerjs',
+		  secure: true,
+		  config: iceConfig // Inject the servers and HMAC credentials here
+		});
+	  
+		peer.on('open', (id) => console.log('Connected with ID:', id));
+	
+		return peer;
 	} catch (error) {
 		console.error('Error getting ice config: ', error);
 		return null;
 	}
   
-	// 2. Start PeerJS
-	const peer = new Peer(myId, {
-	  host: 'peerjs.wahyudi.ca',
-	  port: 9000,
-	  path: '/peerjs',
-	  secure: true,
-	  config: iceConfig // Inject the servers and HMAC credentials here
-	});
-  
-	peer.on('open', (id) => console.log('Connected with ID:', id));
-
-	return peer;
   }
