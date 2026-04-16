@@ -28,10 +28,10 @@ async function initializePeer(id) {
 	// 1. Get Dynamic TURN Credentials from your server
 	console.log('Getting ice config for ', myId);
 	try {
-		const response = await fetch(`https://peerjs.wahyudi.ca:9000/ice-config?id=${myId}`);
+		const response = await fetch(`https://peerjs.wahyudi.ca/ice-config?id=${myId}`);
 		const iceConfig = await response.json();
 		console.log('Ice config: ', iceConfig);
-		
+
 		// 2. Start PeerJS
 		const peer = new Peer(myId, {
 		  host: 'peerjs.wahyudi.ca',
