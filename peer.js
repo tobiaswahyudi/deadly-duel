@@ -23,30 +23,36 @@ function nextData(cb, once = false) {
 }
 
 async function initializePeer(id) {
-	const myId = id || randomPeerId();
-	
-	// 1. Get Dynamic TURN Credentials from your server
-	console.log('Getting ice config for ', myId);
-	try {
-		const response = await fetch(`https://peerjs.wahyudi.ca/ice-config?id=${myId}`);
-		const iceConfig = await response.json();
-		console.log('Ice config: ', iceConfig);
+  const myId = id || randomPeerId();
 
-		// 2. Start PeerJS
-		const peer = new Peer(myId, {
-		  host: 'peerjs.wahyudi.ca',
-		  port: 9000,
-		  path: '/peerjs',
-		  secure: true,
-		  config: iceConfig // Inject the servers and HMAC credentials here
-		});
-	  
-		peer.on('open', (id) => console.log('Connected with ID:', id));
-	
-		return peer;
-	} catch (error) {
-		console.error('Error getting ice config: ', error);
-		return null;
-	}
-  
+  // 1. Get Dynamic TURN Credentials from your server
+  console.log("Getting ice config for ", myId);
+  try {
+    const response = await fetch(
+      `https://peerjs.wahyudi.ca/ice-config?id=${myId}`,
+      {
+        mode: "cors",
+        credentials: "omit", // Sometimes 'omit' works better for simple ICE fetches on iOS Chrome
+      },
+    );
+    const iceConfig = await response.json();
+    console.log("Ice config: ", iceConfig);
+
+    // 2. Start PeerJS
+    const peer = new Peer(myId, {
+      host: "peerjs.wahyudi.ca",
+      port: 9000,
+      path: "/peerjs",
+      secure: true,
+      iceTransportPolicy: "relay", // Force TURN usage
+      config: iceConfig, // Inject the servers and HMAC credentials here
+    });
+
+    peer.on("open", (id) => console.log("Connected with ID:", id));
+
+    return peer;
+  } catch (error) {
+    console.error("Error getting ice config: ", error);
+    return null;
   }
+}
