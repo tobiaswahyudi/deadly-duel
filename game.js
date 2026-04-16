@@ -241,14 +241,14 @@ async function menuConnectingConnect() {
 	gameState.peerjs.peer = peer;
 	
 	gameState.peerjs.peer.on('open', () => {
+		console.log("My peer id is ", gameState.peerjs.peer.id);
 		console.log('peer open')
+		console.log(gameState.peerjs.peer)
+		gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
+		gameState.peerjs.conn.on('open', startGame);
+		gameState.peerjs.peer.on('error', console.error);
+		console.log(gameState.peerjs.conn);
 	})
-	console.log(gameState.peerjs.peer)
-	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
-	gameState.peerjs.conn.on('open', startGame);
-	gameState.peerjs.peer.on('error', console.error);
-	console.log("My peer id is ", gameState.peerjs.peer.id);
-	console.log(gameState.peerjs.conn);
 }
 
 // Start the game; Set up first listeners.
