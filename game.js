@@ -236,10 +236,11 @@ async function menuConnectingHost() {
 async function menuConnectingConnect() {
 	document.getElementById("duel-connect").disabled = true;
 
+	const oppId = getInputValue('connection-phrase-connect');
+	
 	const peer = await initializePeer(oppId);
 	gameState.peerjs.peer = peer;
 	
-	const oppId = getInputValue('connection-phrase-connect');
 	gameState.peerjs.peer.on('open', () => {
 		console.log('peer open')
 	})
