@@ -17,7 +17,7 @@ const gameState = {
         },
         // peerjs
         peerjs: {
-                peer: new Peer(undefined, peerJsConfig),
+                peer: new Peer(randomPeerId(), peerJsConfig),
                 connId: null,
                 conn: null,
                 lastMessageTimestamp: null,

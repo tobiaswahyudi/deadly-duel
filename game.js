@@ -204,7 +204,7 @@ function menuSelectConnect() {
 function menuConnectingBack() {
 	gameState.menu.state = 'menu-select';
 	// reset listeners
-	gameState.peerjs.peer = new Peer(undefined, peerJsConfig);
+	gameState.peerjs.peer = new Peer(randomPeerId(), peerJsConfig);
 	updateDisplay();
 }
 
@@ -237,13 +237,15 @@ function menuConnectingConnect() {
 	document.getElementById("duel-connect").disabled = true;
 
 	const oppId = getInputValue('connection-phrase-connect');
+	gameState.peerjs.peer.on('open', () => {
+		console.log('peer open')
+	})
+	console.log(gameState.peerjs.peer)
 	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
+	gameState.peerjs.conn.on('open', startGame);
 	gameState.peerjs.peer.on('error', console.error);
 	console.log("My peer id is ", gameState.peerjs.peer.id);
 	console.log(gameState.peerjs.conn);
-
-
-	gameState.peerjs.conn.on('open', startGame);
 }
 
 // Start the game; Set up first listeners.
