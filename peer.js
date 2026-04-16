@@ -6,33 +6,11 @@
 
 const isDev = window.location.hostname === "localhost";
 
-// const peerJsConfig = {
-//   //   config: {
-//   //     iceServers: [{ urls: "stun:40.233.120.211:3478" }],
-//   //   },
-//   host: "40.233.120.211",
-//   port: 3478,
-//   path: "/duel",
-//   key: "peeeerjs",
-//   debug: 3,
-// };
-
 const randomPeerId = () =>
   "user-id-" +
   Math.floor(Math.random() * 0xffffff)
     .toString(16)
     .padStart(6, "0");
-
-const peerJsConfig = {
-  host: "peerjs.wahyudi.ca",
-  port: 9000,
-  path: "/",
-  secure: !isDev,
-  debug: 3,
-  config: {
-    iceServers: [{ url: "stun:peerjs.wahyudi.ca:3478" }],
-  },
-};
 
 const peerJsConnectionSettings = {
   serialization: "json",
@@ -43,3 +21,24 @@ function nextData(cb, once = false) {
   gameState.peerjs.conn.on("data", cb);
   gameState.peerjs.conn._events.data.once = once;
 }
+
+async function initializePeer(id) {
+	const myId = id || randomPeerId();
+	
+	// 1. Get Dynamic TURN Credentials from your server
+	const response = await fetch(`https://peerjs.wahyudi.ca:9000/ice-config?id=${myId}`);
+	const iceConfig = await response.json();
+  
+	// 2. Start PeerJS
+	const peer = new Peer(myId, {
+	  host: 'peerjs.wahyudi.ca',
+	  port: 9000,
+	  path: '/peerjs',
+	  secure: true,
+	  config: iceConfig // Inject the servers and HMAC credentials here
+	});
+  
+	peer.on('open', (id) => console.log('Connected with ID:', id));
+
+	return peer;
+  }
