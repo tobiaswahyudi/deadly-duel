@@ -237,8 +237,7 @@ async function menuConnectingConnect() {
 	document.getElementById("duel-connect").disabled = true;
 
 	const oppId = getInputValue('connection-phrase-connect');
-	
-	const peer = await initializePeer(oppId);
+	const peer = await initializePeer();
 	gameState.peerjs.peer = peer;
 	
 	gameState.peerjs.peer.on('open', () => {
