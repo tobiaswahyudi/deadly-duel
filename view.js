@@ -92,7 +92,7 @@ function updateMenuScreen(menuPage) {
 
   if(gameState.menu.state == 'menu-host-waiting') {
 
-    const id = gameState.peerjs.peer.id.split('-')[2] || '<error>';
+    const id = gameState.peerjs?.peer?.id?.split('-')?.[2] || '⏱️';
 
     setTextForId('connection-phrase-display', id);
   }

@@ -6,11 +6,6 @@
 * Written by B. Tobias Wahyudi
 **************************************/
 
-// upon page load, initialize peer
-initializePeer().then(peer => {
-	gameState.peerjs.peer = peer;
-});
-
 /*********************************************
 * Game Control 
 *********************************************/
@@ -196,13 +191,17 @@ function gameOutcomeNext() {
 /*********************************************
 * Menu Selection / Pre-Connect Functions
 *********************************************/
-function menuSelectHost() {
-	gameState.menu.state = "menu-host";
-	updateDisplay();
-}
+// function menuSelectHost() {
+// 	gameState.menu.state = "menu-host";
+// 	updateDisplay();
+// }
 
 function menuSelectConnect() {
 	gameState.menu.state = "menu-connect";
+	// initialize peer for connection
+	initializePeer().then(peer => {
+		gameState.peerjs.peer = peer;
+	});
 	updateDisplay();
 }
 
@@ -218,9 +217,14 @@ function menuConnectingBack() {
 function menuConnectingHost() {
 	gameState.menu.state = 'menu-host-waiting';
 
-	gameState.peerjs.peer.on('connection', (conn) => {
-		gameState.peerjs.conn = conn;
-		startGame();
+	// initialize peer for host
+	initializePeer().then(peer => {
+		gameState.peerjs.peer = peer;
+		gameState.peerjs.peer.on('connection', (conn) => {
+			gameState.peerjs.conn = conn;
+			startGame();
+		});
+		updateDisplay();
 	});
 
 	updateDisplay();
