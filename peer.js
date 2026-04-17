@@ -31,8 +31,8 @@ async function initializePeer(id) {
     const response = await fetch(
       `https://peerjs.wahyudi.ca/ice-config?id=${myId}`,
       {
-        mode: "cors",
-        credentials: "omit", // Sometimes 'omit' works better for simple ICE fetches on iOS Chrome
+        mode: 'cors',
+        referrerPolicy: 'no-referrer',
       },
     );
     const iceConfig = await response.json();

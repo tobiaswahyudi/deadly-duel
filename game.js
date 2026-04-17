@@ -6,6 +6,11 @@
 * Written by B. Tobias Wahyudi
 **************************************/
 
+// upon page load, initialize peer
+initializePeer().then(peer => {
+	gameState.peerjs.peer = peer;
+});
+
 /*********************************************
 * Game Control 
 *********************************************/
@@ -204,7 +209,9 @@ function menuSelectConnect() {
 function menuConnectingBack() {
 	gameState.menu.state = 'menu-select';
 	// reset listeners and peer
-	gameState.peerjs.peer = null;
+	initializePeer().then(peer => {
+		gameState.peerjs.peer = peer;
+	});
 	updateDisplay();
 }
 
@@ -233,12 +240,10 @@ async function menuConnectingHost() {
 	updateDisplay();
 }
 
-async function menuConnectingConnect() {
+function menuConnectingConnect() {
 	document.getElementById("duel-connect").disabled = true;
 
 	const oppId = getInputValue('connection-phrase-connect');
-	const peer = await initializePeer();
-	gameState.peerjs.peer = peer;
 	
 	gameState.peerjs.peer.on('open', () => {
 		console.log("My peer id is ", gameState.peerjs.peer.id);
