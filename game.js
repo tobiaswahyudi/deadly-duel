@@ -215,22 +215,8 @@ function menuConnectingBack() {
 	updateDisplay();
 }
 
-async function menuConnectingHost() {
+function menuConnectingHost() {
 	gameState.menu.state = 'menu-host-waiting';
-
-	const selfId = getInputValue('connection-phrase-host');
-	if(selfId.length < 16) {
-		document.getElementById('phrase-error').innerText = 'please forge a phrase at least 16 characters in length';
-		return;
-	} else {
-		document.getElementById('phrase-error').innerText = '';
-	}
-
-	gameState.peerjs.selfId = selfId;
-	gameState.peerjs.peer = await initializePeer(selfId);
-	
-	gameState.peerjs.peer.on('error', console.error);
-	console.log("My peer id is ", gameState.peerjs.peer.id);
 
 	gameState.peerjs.peer.on('connection', (conn) => {
 		gameState.peerjs.conn = conn;
@@ -243,17 +229,13 @@ async function menuConnectingHost() {
 function menuConnectingConnect() {
 	document.getElementById("duel-connect").disabled = true;
 
-	const oppId = getInputValue('connection-phrase-connect');
-	
-	gameState.peerjs.peer.on('open', () => {
-		console.log("My peer id is ", gameState.peerjs.peer.id);
-		console.log('peer open')
-		console.log(gameState.peerjs.peer)
-		gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
-		gameState.peerjs.conn.on('open', startGame);
-		gameState.peerjs.peer.on('error', console.error);
-		console.log(gameState.peerjs.conn);
-	})
+	const oppId = 'user-id-' + getInputValue('connection-phrase-connect');
+
+	console.log("My peer id is ", gameState.peerjs.peer.id, ' and connecting to ', oppId);
+	gameState.peerjs.conn = gameState.peerjs.peer.connect(oppId, peerJsConnectionSettings);
+	gameState.peerjs.conn.on('open', startGame);
+	gameState.peerjs.peer.on('error', console.error);
+	console.log(gameState.peerjs.conn);
 }
 
 // Start the game; Set up first listeners.

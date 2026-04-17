@@ -91,7 +91,10 @@ function updateMenuScreen(menuPage) {
   currentSection.style.display = 'unset';
 
   if(gameState.menu.state == 'menu-host-waiting') {
-    setTextForId('connection-phrase-display', gameState.peerjs.selfId);
+
+    const id = gameState.peerjs.peer.id.split('-')[2] || '<error>';
+
+    setTextForId('connection-phrase-display', id);
   }
 }
 
