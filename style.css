@@ -146,9 +146,9 @@ table {
 
 td {
 	border: 1px solid black;
-	min-width: 32px;
+	min-width: 2.2rem;
 	box-sizing: border-box;
-	padding: 4px;
+	padding: 0.2rem;
 	text-align: center;
 }
 
@@ -185,7 +185,7 @@ td {
 	p {
 		width: 0;
 		rotate: 90deg;
-		margin: -24px 0px 0px 7px;
+		margin: -2rem 0px 0px 0.5rem;
 	}
 }
 
@@ -195,11 +195,11 @@ td {
 
 #table-key {
 	list-style-type: none;
-    padding-inline-start: 0;
+    padding-inline-start: 1rem;
 }
 
 .key-box {
-	width: 1em;
-	height: 1em;
+	width: 1rem;
+	height: 1rem;
 	display: inline-block;
 }
