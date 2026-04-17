@@ -28,6 +28,7 @@ h1 {
 	font-size: 6rem;
 	font-family: 'Rubik Scribble';
 	text-align: center;
+	margin: 2rem;
 }
 
 h3 {
@@ -135,4 +136,70 @@ input {
 	box-sizing: border-box;
 	padding: 0.5rem 0;
 	font-size: 1.2em;
+}
+
+table {
+	border-spacing: 0px;
+	border: 1px solid black;
+	margin: auto;
+}
+
+td {
+	border: 1px solid black;
+	min-width: 32px;
+	box-sizing: border-box;
+	padding: 4px;
+	text-align: center;
+}
+
+.bl {
+	border-left: 3px solid black;
+}
+
+.bb {
+	border-bottom: 3px solid black;
+}
+
+#rules {
+	width: 100%;
+	/* display: none; */
+}
+
+.z {
+	background-color: #7af7b2;
+}
+
+.d {
+	background-color: lightskyblue;
+}
+
+.t {
+	background-color: palevioletred;
+}
+
+.b {
+	background-color: rgba(105, 90, 205, 0.618);
+}
+
+#table-them {
+	p {
+		width: 0;
+		rotate: 90deg;
+		margin: -24px 0px 0px 7px;
+	}
+}
+
+#table-and-key {
+	display: flex;
+}
+
+#table-key {
+	list-style-type: none;
+    padding-inline-start: 0;
+}
+
+.key-box {
+	width: 1em;
+	height: 1em;
+	display: inline-block;
 }

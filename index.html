@@ -26,6 +26,69 @@
 			<button onclick="menuSelectConnect();">
 				<h3>connect to a duel</h3>
 			</button>
+			<br></br>
+			<button onClick="openRules();">
+				<h3 id="show-rules-button">show rules</h3>
+			</button>
+			<br></br>
+			<div id="rules">
+				<div id="table-and-key">
+				<table>
+					<tr>
+						<td colspan="2" rowspan="2"></td>
+						<td colspan="9">You</td>
+					</tr>
+					<tr>
+						<td>0</td><td class="bl">1</td><td>2</td><td>3</td><td class="bl">4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+					</tr>
+					<tr>
+						<td rowspan="9" id="table-them"><p>Them</p></td>
+						<td class="bb">0</td><td class="bb z">0</td><td class="bb d bl">2</td><td class="bb d">4</td><td class="bb d">6</td><td class="bb z bl">0</td><td class="bb z">0</td><td class="bb z">0</td><td class="bb z">0</td><td class="bb z">0</td>
+					</tr>
+					<tr>
+						<td>1</td><td class="t">2</td><td class="z bl">0</td><td class="z">0</td><td class="z">0</td><td class="d bl">4</td><td class="d">5</td><td class="d">6</td><td class="d">7</td><td class="d">8</td>
+					</tr>
+					<tr>
+						<td>2</td><td class="t">4</td><td class="z bl">0</td><td class="z">0</td><td class="z">0</td><td class="d bl">4</td><td class="d">5</td><td class="d">6</td><td class="d">7</td><td class="d">8</td>
+					</tr>
+					<tr>
+						<td class="bb">3</td><td class="bb t">6</td><td class="bb z bl">0</td><td class="bb z">0</td><td class="bb z">0</td><td class="bb d bl">4</td><td class="bb d">5</td><td class="bb d">6</td><td class="bb d">7</td><td class="bb d">8</td>
+					</tr>
+					<tr>
+						<td>4</td><td class="z">0</td><td class="t bl">4</td><td class="t">4</td><td class="t">4</td><td class="b bl">2</td><td class="d">1</td><td class="d">2</td><td class="d">3</td><td class="d">4</td>
+					</tr>
+					<tr>
+						<td>5</td><td class="z">0</td><td class="t bl">5</td><td class="t">5</td><td class="t">5</td><td class="t bl">1</td><td class="b">2</td><td class="d">1</td><td class="d">2</td><td class="d">3</td>
+					</tr>
+					<tr>
+						<td>6</td><td class="z">0</td><td class="t bl">6</td><td class="t">6</td><td class="t">6</td><td class="t bl">2</td><td class="t">1</td><td class="b">3</td><td class="d">1</td><td class="d">2</td>
+					</tr>
+					<tr>
+						<td>7</td><td class="z">0</td><td class="t bl">7</td><td class="t">7</td><td class="t">7</td><td class="t bl">3</td><td class="t">2</td><td class="t">1</td><td class="b">3</td><td class="d">1</td>
+					</tr>
+					<tr>
+						<td>8</td><td class="z">0</td><td class="t bl">8</td><td class="t">8</td><td class="t">8</td><td class="t bl">4</td><td class="t">3</td><td class="t">2</td><td class="t">1</td><td class="b">4</td>
+					</tr>
+				</table>
+				<ul id="table-key">
+					<li><div class="key-box t"></div> Red: You take damage</li>
+					<li><div class="key-box d"></div> Blue: You deal damage</li>
+					<li><div class="key-box b"></div> Purple: Both players take damage</li>
+				</ul>
+				</div>
+				<ul>
+					<li>The energy cost for a move is the move number.</li>
+					<li>Each turn, both players regain a set amount of energy.</li>
+					<li>Defend, Quick Attack, and Heavy Attack win against each other in a rock-paper-scissors cycle.</li>
+					<li>Quick Attack wins against Defend with double damage.</li>
+					<li>Heavy Attack wins against Quick Attack, dealing full damage regardless of Quick power.</li>
+					<li>Defend wins against Heavy Attack, taking 0 damage while the enemy expends energy.</li>
+					<li>If both players Defend, no damage is dealt.</li>
+					<li>The same goes if both players Quick Attack, regardless of Quick Power.</li>
+					<li>If both players Heavy Attack for the same number, each player takes half the damage.</li>
+					<li>If both players Heavy Attack for different powers, the higher attacker deals damage equal to the difference.</li>
+				</ul>
+			</div>
 		</section>
 		<!-- <section id="menu-host">
 			<h3>Inscribe a connection phrase</h3>

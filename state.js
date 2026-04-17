@@ -9,6 +9,7 @@ const gameState = {
         screen: 'menu',
         menu: {
                 state: "menu-select",
+                rulesOpen: false,
         },
         // options
         options: {

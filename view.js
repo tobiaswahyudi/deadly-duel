@@ -96,6 +96,9 @@ function updateMenuScreen(menuPage) {
 
     setTextForId('connection-phrase-display', id);
   }
+
+  document.getElementById('rules').style.display = gameState.menu.rulesOpen ? 'block' : 'none';
+  setTextForId('show-rules-button', gameState.menu.rulesOpen ? 'hide rules' : 'show rules');
 }
 
 /**************************************

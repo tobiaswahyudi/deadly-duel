@@ -242,6 +242,11 @@ function menuConnectingConnect() {
 	console.log(gameState.peerjs.conn);
 }
 
+function openRules() {
+	gameState.menu.rulesOpen ^= true;
+	updateDisplay();
+}
+
 // Start the game; Set up first listeners.
 // A game starts when the player connects to the opponent and ends when they close the tab.
 function startGame() {
