@@ -179,22 +179,22 @@
 		</section>
 		<section id="make-move">
 			<h2 id="match-round-counter">Make an action:</h2>
-			<h3>Make an action:</h3>
-			<div class="h-flex">
+			<!-- <h3>Make an action:</h3> -->
+			<!-- <div class="h-flex">
 				<div class="attack-label" style="flex:1;max-width: 5rem;background:#b9ebda;">Dodge</div>
 				<div class="attack-label" style="flex:3;max-width: 15rem;background:#bbdfff;">Quick Attack</div>
 				<div class="attack-label" style="flex:5;max-width: 25rem;background:#e6c4f7;">Heavy Attack</div>
-			</div>
-			<div id="move-options" class="h-flex">
-				<button class="move-option" onclick="sendMove(0);">0</button>
-				<button class="move-option" onclick="sendMove(1);">1</button>
-				<button class="move-option" onclick="sendMove(2);">2</button>
-				<button class="move-option" onclick="sendMove(3);">3</button>
-				<button class="move-option" onclick="sendMove(4);">4</button>
-				<button class="move-option" onclick="sendMove(5);">5</button>
-				<button class="move-option" onclick="sendMove(6);">6</button>
-				<button class="move-option" onclick="sendMove(7);">7</button>
-				<button class="move-option" onclick="sendMove(8);">8</button>
+			</div> -->
+			<div id="move-cards" class="h-flex">
+				<div class="move-card" onclick="sendMove(0);">0</div>
+				<div class="move-card" onclick="sendMove(1);">1</div>
+				<div class="move-card" onclick="sendMove(2);">2</div>
+				<div class="move-card" onclick="sendMove(3);">3</div>
+				<div class="move-card" onclick="sendMove(4);">4</div>
+				<div class="move-card" onclick="sendMove(5);">5</div>
+				<div class="move-card" onclick="sendMove(6);">6</div>
+				<div class="move-card" onclick="sendMove(7);">7</div>
+				<div class="move-card" onclick="sendMove(8);">8</div>
 			</div>
 		</section>
 		<section id="waiting-move">
@@ -218,6 +218,7 @@
 		</section>
 	</page>
 </body>
+<script src="cards.js"></script>
 <script>
 	// After page is loaded, do initial page update
 	updateDisplay();

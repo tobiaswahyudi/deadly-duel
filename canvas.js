@@ -5,7 +5,7 @@
 **************************************/
 
 function initializeCanvas(canvas) {
-  const sectionInMenuWidth = document.getElementById('menu-select').getBoundingClientRect().width;
+  const sectionInMenuWidth = document.getElementById('make-move').getBoundingClientRect().width;
   const sectionInGameWidth = document.getElementById('enter-name').getBoundingClientRect().width;
 
   // While debugging, sectionInMenuWidth will be 0, so use sectionInGameWidth.

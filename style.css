@@ -203,3 +203,21 @@ td {
 	height: 1rem;
 	display: inline-block;
 }
+
+.move-card {
+	width: 5rem;
+	height: 7rem;
+	background-color: goldenrod;
+	border: 3px solid darkred;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 2px 4px 7px 0px #00000073;
+
+	font-size: 4rem;
+}
+
+#move-cards {
+	gap: 0.5rem;
+	perspective: 60rem;
+}

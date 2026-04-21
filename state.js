@@ -6,7 +6,7 @@
 **************************************/
 const gameState = {
         // main menu
-        screen: 'menu',
+        screen: 'game',
         menu: {
                 state: "menu-select",
                 rulesOpen: false,
@@ -25,7 +25,7 @@ const gameState = {
         },
         // running game
         game: {
-                state: 'enter-name',
+                state: 'make-move',
                 duelNumber: 1,
                 roundNumber: 1,
                 me: {
@@ -45,5 +45,6 @@ const gameState = {
                         winCount: 0,
                 },
                 animationStartTimestamp: null,
+                selectedCard: null,
         }
 }
