@@ -60,7 +60,7 @@ function updateGameScreen(gamePage) {
 
     document.getElementById("send-rematch").disabled = gameState.game.me.wantRematch;
   } else {
-    const moveOptions = [...document.getElementById('move-options').children]
+    const moveOptions = [...document.getElementById('move-cards').children]
     moveOptions.forEach((opt, idx) => {
       opt.disabled = (idx > gameState.game.me.energy);
     });

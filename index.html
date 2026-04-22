@@ -5,6 +5,7 @@
 	<script src="peer.js"></script>
 	<script src="state.js"></script>
 	<script src="hit-calculation.js"></script>
+	<script src="assets.js"></script>
 	<script src="view.js"></script>
 	<script src="canvas.js"></script>
 	<script src="game.js"></script>
@@ -179,23 +180,8 @@
 		</section>
 		<section id="make-move">
 			<h2 id="match-round-counter">Make an action:</h2>
-			<!-- <h3>Make an action:</h3> -->
-			<!-- <div class="h-flex">
-				<div class="attack-label" style="flex:1;max-width: 5rem;background:#b9ebda;">Dodge</div>
-				<div class="attack-label" style="flex:3;max-width: 15rem;background:#bbdfff;">Quick Attack</div>
-				<div class="attack-label" style="flex:5;max-width: 25rem;background:#e6c4f7;">Heavy Attack</div>
-			</div> -->
-			<div id="move-cards" class="h-flex">
-				<div class="move-card" onclick="sendMove(0);">0</div>
-				<div class="move-card" onclick="sendMove(1);">1</div>
-				<div class="move-card" onclick="sendMove(2);">2</div>
-				<div class="move-card" onclick="sendMove(3);">3</div>
-				<div class="move-card" onclick="sendMove(4);">4</div>
-				<div class="move-card" onclick="sendMove(5);">5</div>
-				<div class="move-card" onclick="sendMove(6);">6</div>
-				<div class="move-card" onclick="sendMove(7);">7</div>
-				<div class="move-card" onclick="sendMove(8);">8</div>
-			</div>
+			<h3>Make an action:</h3>
+			<div id="move-cards" class="h-flex"></div>
 		</section>
 		<section id="waiting-move">
 			<h3>Your next move is:</h3>
@@ -222,6 +208,11 @@
 <script>
 	// After page is loaded, do initial page update
 	updateDisplay();
-	const canvas = document.getElementById('canvas');
-	initializeCanvas(canvas);
+	preloadImages().then(() => {
+		// After assets are loaded, draw canvas
+		const canvas = document.getElementById('canvas');
+		initializeCanvas(canvas);
+
+		setupCards();
+	})
 </script>

@@ -1,25 +1,92 @@
 // Update card positioning
-const cards = [...document.getElementById('move-cards').children];
+const cardContainer = document.getElementById('move-cards');
+const cards = [];
 
-window.addEventListener('mousemove',(ev) => {
-    const mouseX = ev.clientX;
-    const mouseY = ev.clientY;
-    cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const rectX = rect.x + rect.width * 0.5;
-        const rectY = rect.y + rect.height * 0.5;
+const createCard = (idx) => {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('move-spacer');
 
-        const dx = mouseX - rectX;
-        const dy = mouseY - rectY;
+    const typeIdx = actionType(idx);
+    const typeString = ACTION_LABELS[typeIdx];
 
-        const angle = Math.atan(Math.hypot(dx, dy) / 30) * 2 / Math.PI;
+    const typeAsset = [
+        ASSETS.IMG.DEFEND,
+        ASSETS.IMG.QUICK,
+        ASSETS.IMG.HEAVY,
+    ][typeIdx]
 
-        card.style.transform = `rotate3d(${-dy}, ${dx}, 0, ${angle * 32}deg)`
+    const colors = [
+        'hsl(159.6, 22%, 87.35%)', // '#b9ebda',
+        'hsl(208.24, 38%, 90.67%)', // '#bbdfff',
+        'hsl(280, 43%, 89.86%)' // '#e6c4f7'
+    ];
 
-        const downFacingness = Math.atan(Math.max(0, dy) / 90) * 2 / Math.PI;
-        console.log(downFacingness)
-        const lightness = 50 - 5 * downFacingness;
-        // card.style.background = `linear-gradient(0deg, hsl(43 74% 50% / 1), hsl(43 74% ${lightness}% / 1))`
-        card.style.background = `hsl(43 74% ${lightness}%`
+    // cardDiv.style.background = colors[typeIdx];
+    // cardDiv.onclick = () => sendMove(idx);
+        
+    cardDiv.innerHTML = `
+    <div class="move-card">
+        <p class="move-title">
+            ${typeString}
+        </p>
+        <div class="move-main">
+            <img src="${typeAsset.CARD}" class="move-img">
+            <p class="move-cost">${idx}</p>
+        </div>
+    </div>
+    `
+    // <div class="move-text">
+    //     <div class="move-desc">
+    //         <img src="img/def.png">
+    //     </div>
+    //     <div class="move-desc">
+    //         <img src="img/quick-sprite.png">
+    //     </div>
+    //     <div class="move-desc">
+    //         <img src="img/heavy-sprite.png">
+    //     </div>
+    // </div>
+    // <div>
+    //     <p>${}</p>
+    // </div>
+    // <div>
+    //     <p>${}</p>
+    // </div>
+    // <div>
+    //     <p>${}</p>
+    // </div>
+
+    cardContainer.appendChild(cardDiv);
+
+    return cardDiv;
+}
+
+const updateCards = () => {
+    const selected = gameState.game.selectedCard;
+    if(selected == null) return;
+    cards.forEach((c, idx) => {
+        const firstChild = c.children[0];
+        if(idx == selected) {
+            c.style.flex = `2 1 0`;
+            firstChild.style.transform = `scale(${2})`;
+        } else {
+            c.style.flex = `${7/8} 1 0`;
+            firstChild.style.transform = `scale(${7/8})`;
+        }
     })
-})
+}
+
+const setupCards = () => {
+    // Create new cards based on matrix
+    for(let i = 0; i <= 8; i++){
+        cards.push(createCard(i));
+    }
+
+    cards.forEach((card, idx) => {
+        card.onclick = () => {
+            console.log('clicked', idx)
+            gameState.game.selectedCard = idx;
+            updateCards();
+        }
+    })
+}
