@@ -193,8 +193,16 @@ ul {
 	background-color: palevioletred;
 }
 
-.b {
-	background-color: rgba(105, 90, 205, 0.618);
+li {
+	.d {
+		color: skyblue;
+		background: none;
+	}
+
+	.t {
+		color: palevioletred;
+		background: none;
+	}
 }
 
 #table-them {

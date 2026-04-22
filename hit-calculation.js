@@ -159,7 +159,7 @@ function tooltipLabel(move) {
 * ENERGY
 **************************************/
 function getEnergyRecovered() {
-	return Math.floor(gameState.game.roundNumber/2);
+	return Math.floor((gameState.game.roundNumber + 1) /2);
 }
 
 const MAX_ENERGY = 10;

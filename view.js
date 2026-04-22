@@ -72,6 +72,8 @@ function updateGameScreen(gamePage) {
     // setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} - Round ${gameState.game.roundNumber}`);
 
     const selected = gameState.game.selectedCard;
+    const tooltipList = document.getElementById('move-tooltip');
+    [...tooltipList.children].forEach(c => c.remove());
     if(selected != null) {
       document.getElementById('move-confirm').style.display = 'block';
       const move = ACTION_HANDLEBARS[actionType(selected)]
@@ -82,9 +84,6 @@ function updateGameScreen(gamePage) {
       cardDiv.classList.add('move-spacer');
 
       const tooltips = tooltipLabel(selected);
-
-      const tooltipList = document.getElementById('move-tooltip');
-      [...tooltipList.children].forEach(c => c.remove());
 
       // Energy
       const listItem = document.createElement('li');

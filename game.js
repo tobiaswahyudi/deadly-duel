@@ -147,12 +147,12 @@ function receiveData(playerData) {
 	}
 }
 
-function moveForPlayer(roundNumber, player, theirMove, otherMove) {
+function moveForPlayer(player, theirMove, otherMove) {
 	const dmgReceived = outcomeDamage(theirMove, otherMove);
 
 	player.hp -= dmgReceived;
 	player.hp = Math.max(player.hp, 0);
-	player.energy += Math.floor(roundNumber/2) - theirMove;
+	player.energy += getEnergyRecovered() - theirMove;
 	player.energy = Math.min(player.energy, 10);
 }
 
@@ -161,30 +161,32 @@ function computeMove() {
 	const myMove = gameState.game.me.move;
 	const oppMove = gameState.game.opponent.move;
 
-	moveForPlayer(gameState.game.roundNumber, gameState.game.me, myMove, oppMove);
-	moveForPlayer(gameState.game.roundNumber,gameState.game.opponent, oppMove, myMove);
+	moveForPlayer(gameState.game.me, myMove, oppMove);
+	moveForPlayer(gameState.game.opponent, oppMove, myMove);
 
-	gameState.game.roundNumber += 1;
-
+	
 	if(gameState.game.me.hp == 0 || gameState.game.opponent.hp == 0) {
 		// No further communication, unless rematch is sent
 		gameOver();
 		return;
 	}
-
+	
 	gameState.game.me.move = null;
 	gameState.game.opponent.move = null;
-
+	gameState.game.selectedCard = null;
+	
 	gameState.game.state = 'move-outcome';
 	gameState.game.animationStartTimestamp = new Date().getTime();
 	
 	document.getElementById('outcome-label').innerText = `${outcomeLabel(myMove, oppMove)}
 	
 	You recovered ${getEnergyRecovered()} energy.`;
+	gameState.game.roundNumber += 1;
 	updateDisplay();
 }
 
 function gameOutcomeNext() {
+	setupCards();
 	startMove();
 }
 

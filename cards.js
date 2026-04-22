@@ -105,17 +105,9 @@ const sequentialCreateFromNthCard = (idx) => {
 }
 
 const setupCards = () => {
-    // // Create new cards based on matrix
-    // for(let i = 0; i <= 8; i++){
-    //     cards.push(createCard(i));
-    // }
-
-    // cards.forEach((card, idx) => {
-    //     card.onclick = () => {
-    //         console.log('clicked', idx)
-    //         gameState.game.selectedCard = idx;
-    //         updateCards();
-    //     }
-    // })
+    cards.forEach((card, idx) => {
+        card.remove();
+    });
+    cards.splice(0);
     sequentialCreateFromNthCard(0)
 }
