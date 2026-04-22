@@ -179,8 +179,15 @@
 			<h3>Wait impatiently for your opponent's identity...</h3>
 		</section>
 		<section id="make-move">
-			<h2 id="match-round-counter">Make an action:</h2>
-			<h3>Make an action:</h3>
+			<div class="h-flex" id="move-explainer">
+				<div id="move-display-confirm">
+					<!-- <h2 id="match-round-counter">Duel 1 - Round 1</h2> -->
+					<h3 id="move-display">Make an action:</h3>
+					<button id="move-confirm">Confirm</button>
+				</div>
+				<ul id="move-tooltip"  class="flex">
+				</ul>
+			</div>
 			<div id="move-cards" class="h-flex"></div>
 		</section>
 		<section id="waiting-move">
@@ -215,4 +222,8 @@
 
 		setupCards();
 	})
+
+	document.getElementById('move-confirm').onclick = () => {
+		sendMove(gameState.game.selectedCard);
+	}
 </script>

@@ -14,7 +14,11 @@ function findWithId(collection, id) {
 }
 
 // Set the innerText for the DOM element whose id is specified.
-function setTextForId(id, text) {
+function setTextForId(id, text, raw=false) {
+  if(raw) {
+    document.getElementById(id).innerHTML = text;
+    return;
+  }
   document.getElementById(id).innerText = text;
 }
 
@@ -55,22 +59,56 @@ function updateGameScreen(gamePage) {
         The score is ${gameState.game.me.winCount} (you) vs ${gameState.game.opponent.winCount} (them)`;
       }
     })();
-    setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} Results:`);
+    // setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} Results:`);
     setTextForId('duel-outcome', gameOverLabel);
 
     document.getElementById("send-rematch").disabled = gameState.game.me.wantRematch;
   } else {
-    const moveOptions = [...document.getElementById('move-cards').children]
-    moveOptions.forEach((opt, idx) => {
-      opt.disabled = (idx > gameState.game.me.energy);
-    });
+    // const moveOptions = [...document.getElementById('move-cards').children]
+    // moveOptions.forEach((opt, idx) => {
+    //   opt.disabled = (idx > gameState.game.me.energy);
+    // });
 
-    setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} - Round ${gameState.game.roundNumber}`);
+    // setTextForId('match-round-counter', `Duel ${gameState.game.duelNumber} - Round ${gameState.game.roundNumber}`);
+
+    const selected = gameState.game.selectedCard;
+    if(selected != null) {
+      document.getElementById('move-confirm').style.display = 'block';
+      const move = ACTION_HANDLEBARS[actionType(selected)]
+      const moveDisplayString = `[${move} ${selected}]`
+      setTextForId('move-display', formatTooltipLabel(moveDisplayString, 0), true);
+
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('move-spacer');
+
+      const tooltips = tooltipLabel(selected);
+
+      const tooltipList = document.getElementById('move-tooltip');
+      [...tooltipList.children].forEach(c => c.remove());
+
+      // Energy
+      const listItem = document.createElement('li');
+      const cur = gameState.game.me.energy;
+      const recovered = getEnergyRecovered();
+      const endEnergy = Math.min(cur - selected + recovered, MAX_ENERGY);
+      const energyString = `Energy = ${cur} current - ${move} ${selected} + recover ${recovered} energy this turn &#x2192; ${endEnergy == MAX_ENERGY ? endEnergy + ' (max)' : endEnergy}`
+      listItem.innerHTML = formatTooltipLabel(energyString, 0);
+      tooltipList.appendChild(listItem);
+
+      tooltips.forEach(s => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = s;
+        tooltipList.appendChild(listItem);
+      })
+    } else {
+      setTextForId('move-display', 'Make an action:')
+      document.getElementById('move-confirm').style.display = 'none';
+    }
   }
   setTextForId('my-name-display', gameState.game.me.name);
   if(gameState.game.me.name) setTextForId('my-name', gameState.game.me.name);
   if(gameState.game.opponent.name) setTextForId('opp-name', gameState.game.opponent.name);	
-  setTextForId('my-move-display', `${ACTION_LABELS[actionType(gameState.game.me.move)]} (${gameState.game.me.move})`);
+  setTextForId('my-move-display', `${formatTooltipLabel(ACTION_HANDLEBARS[actionType(gameState.game.me.move)], 0)} (${gameState.game.me.move})`, true);
 
   document.getElementById('my-hp').style.width = `${gameState.game.me.hp}0%`;
   setTextForId('my-hp-label', `${gameState.game.me.hp}/10`);

@@ -180,7 +180,7 @@ function computeMove() {
 	
 	document.getElementById('outcome-label').innerText = `${outcomeLabel(myMove, oppMove)}
 	
-	You recovered ${Math.floor(gameState.game.roundNumber/2)} energy.`;
+	You recovered ${getEnergyRecovered()} energy.`;
 	updateDisplay();
 }
 

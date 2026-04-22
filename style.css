@@ -29,6 +29,7 @@ body {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	overflow: hidden;
 }
 
 h1 {
@@ -55,6 +56,10 @@ page {
 	/* @media screen and (max-width: 480px) {
 		max-width: 100vw;
 	} */
+}
+
+page#game {
+	padding: 2rem;
 }
 
 canvas {
@@ -159,12 +164,16 @@ td {
 	text-align: center;
 }
 
+ul {
+	padding-inline-start: 2rem;
+}
+
 .bl {
-	border-left: 3px solid black;
+	border-left: 0.2rem solid black;
 }
 
 .bb {
-	border-bottom: 3px solid black;
+	border-bottom: 0.2rem solid black;
 }
 
 #rules {
@@ -214,22 +223,24 @@ td {
 #move-cards {
 	/* gap: 0.5rem; */
 	perspective: 60rem;
+	/* justify-content: center; */
 }
 
 .move-spacer {
 	flex: 1;
-	transition: flex 0.4s;
+	transition: flex 0.2s, max-width 1.5s, filter 0.2s, transform 0.2s;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	max-width: 9rem;
 }
 
 .move-card {
 	width: 5rem;
 	height: 7rem;
-	transition: transform 0.4s;
+	transition: transform 0.2s, opacity 0.2s;
 	background-color: gainsboro;
-	border: 3px solid gray;
+	border: 0.2rem solid gray;
 	display: grid;
   	grid-template-rows: [card-top] 2fr [header-img] 8fr [img-text];
 	/* 4fr [card-bottom]; */
@@ -323,4 +334,38 @@ td {
 		width: 4rem;
 		height: 6rem;
 	}
+}
+
+.inline-move {
+	width: 1em;
+	height: 1em;
+	margin-bottom: -0.15em;
+}
+
+#move-explainer {
+	margin-bottom: 3rem;
+	height: 11rem;
+}
+
+@media screen and (max-width: 800px) {
+	#move-explainer {
+		height: 16rem;
+	}
+
+	page#game {
+		padding-top: 8rem;
+	}
+}
+
+.flex {
+	flex: 1 1 0;
+}
+
+#move-display-confirm {
+	margin-right: 2rem;
+	width: 15rem;
+}
+
+#move-confirm {
+	padding: 1rem;
 }

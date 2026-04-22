@@ -2,6 +2,8 @@
 * hit-calculation.js
 *
 * Configuration and utilities for scoring and labeling hit outcomes.
+
+Now expanded to be like... all the rules r here idk
 **************************************/
 
 /**************************************
@@ -19,6 +21,12 @@ const ACTION_LABELS = [
 	"Quick attack",
 	"Heavy attack"
 ];
+
+const ACTION_HANDLEBARS = [
+	"{block}",
+	"{quick}",
+	"{heavy}",
+]
 
 const OUTCOME_LABELS = {
 	[ACTION_TYPES.ACTION_BLOCK]: {
@@ -38,8 +46,35 @@ const OUTCOME_LABELS = {
 		RPS_LOSE: "You ready a big swing, but too slow. They block your attack, and no damage is dealt.",
 		ENERGY_WIN: "You both swing, but you deflect their attack. You land a big hit for {myDmg} hp.",
 		ENERGY_LOSE: "You charge mightily, but their stance is too solid. You are terribly hit for for {oppDmg} hp.",
-		ENERGY_TIED: "Both charging furiously, you manage to hit each other. You are both injured for {oppDmg} hp.", 
+		ENERGY_TIED: "Both charging furiously, you deflect each other's attacks. No damage is dealt.", 
 	}
+};
+
+// This is dependent on the hit matrix -- idk how to unify these into a SSoT
+const MOVE_TOOLTIP = {
+	[ACTION_TYPES.ACTION_BLOCK]: [
+		`Enemy {block}s: 0 damage`,
+		`Enemy {quick}s for <span class="t">X</span>: you take <span class="t">2&#x00D7;X</span> damage`,
+		`Enemy {heavy}s: 0 damage`,
+	],
+	[ACTION_TYPES.ACTION_QUICK]: [
+		`Enemy {block}s: you deal <span class="d">2&#x00D7;{move}</span> damage`,
+		`Enemy {quick}s: 0 damage`,
+		`Enemy {heavy}s for <span class="t">X</span>: you take <span class="t">X</span> damage`,
+	],
+	[ACTION_TYPES.ACTION_HEAVY]: [
+		`Enemy {block}s: 0 damage`,
+		`Enemy {quick}s: you deal <span class="d">{move}</span> damage`,
+		`Enemy {heavy}s for <span class="d">X < {move}</span>: you deal <span class="d">{move} - X</span> damage`,
+		`Enemy {heavy}s for {move}: 0 damage`,
+		`Enemy {heavy}s for <span class="t">X > {move}</span>: you take <span class="t">X - {move}</span> damage`,
+	]
+};
+
+const TOOLTIP_COLORS = {
+	[ACTION_TYPES.ACTION_BLOCK]: '#b9ebda',
+	[ACTION_TYPES.ACTION_QUICK]: '#bbdfff',
+	[ACTION_TYPES.ACTION_HEAVY]: '#e6c4f7',
 };
 
 /**************************************
@@ -73,7 +108,7 @@ function actionType(move) {
 }
 
 function formatOutcomeLabel(label, myDmg, oppDmg) {
-	return label.replace("{myDmg}", myDmg).replace("{oppDmg}", oppDmg);
+	return label.replaceAll("{myDmg}", myDmg).replaceAll("{oppDmg}", oppDmg);
 }
 
 function checkRpsLose(a, b) {
@@ -99,3 +134,32 @@ function outcomeLabel(myMove, oppMove) {
 
 	return formatOutcomeLabel(labelFormatString, outcomeDamage(oppMove, myMove), outcomeDamage(myMove, oppMove));
 }
+
+function formatTooltipLabel(label, move) {
+	return label
+		.replaceAll("{block}", `<img class="inline-move" src="${ASSETS.IMG.DEFEND.SPRITE}"> <span style="filter: brightness(0.75); color: ${TOOLTIP_COLORS[ACTION_TYPES.ACTION_BLOCK]}">${ACTION_LABELS[ACTION_TYPES.ACTION_BLOCK]}</span>`)
+		.replaceAll("{quick}", `<img class="inline-move" src="${ASSETS.IMG.QUICK.SPRITE}"> <span style="filter: brightness(0.75); color: ${TOOLTIP_COLORS[ACTION_TYPES.ACTION_QUICK]}">${ACTION_LABELS[ACTION_TYPES.ACTION_QUICK]}</span>`)
+		.replaceAll("{heavy}", `<img class="inline-move" src="${ASSETS.IMG.HEAVY.SPRITE}"> <span style="filter: brightness(0.75); color: ${TOOLTIP_COLORS[ACTION_TYPES.ACTION_HEAVY]}">${ACTION_LABELS[ACTION_TYPES.ACTION_HEAVY]}</span>`)
+		.replaceAll("{move}", move);
+}
+
+function tooltipLabel(move) {
+	const actionIndex = actionType(move);
+
+	const strings = MOVE_TOOLTIP[actionIndex].map(s => formatTooltipLabel(s, move));
+
+	if(move == 4) strings.splice(2, 1);
+	if(move == 8) strings.splice(4, 1);
+	
+
+	return strings;
+}
+
+/**************************************
+* ENERGY
+**************************************/
+function getEnergyRecovered() {
+	return Math.floor(gameState.game.roundNumber/2);
+}
+
+const MAX_ENERGY = 10;

@@ -31,7 +31,7 @@ const gameState = {
                 me: {
                         name: null,
                         hp: 10,
-                        energy: 10,
+                        energy: 5,
                         move: null,
                         wantRematch: null,
                         winCount: 0,

@@ -15,17 +15,8 @@ const createCard = (idx) => {
         ASSETS.IMG.HEAVY,
     ][typeIdx]
 
-    const colors = [
-        'hsl(159.6, 22%, 87.35%)', // '#b9ebda',
-        'hsl(208.24, 38%, 90.67%)', // '#bbdfff',
-        'hsl(280, 43%, 89.86%)' // '#e6c4f7'
-    ];
-
-    // cardDiv.style.background = colors[typeIdx];
-    // cardDiv.onclick = () => sendMove(idx);
-        
     cardDiv.innerHTML = `
-    <div class="move-card">
+    <div class="move-card" style="transform: scale(0);">
         <p class="move-title">
             ${typeString}
         </p>
@@ -57,10 +48,14 @@ const createCard = (idx) => {
     // </div>
 
     cardContainer.appendChild(cardDiv);
+    // constrain so cards are close together
+    cardDiv.style.maxWidth = '6rem'
+    cardDiv.style.filter = `brightness(1)`;
 
     return cardDiv;
 }
 
+// This violates SRP with updateDisplay but idk whatever
 const updateCards = () => {
     const selected = gameState.game.selectedCard;
     if(selected == null) return;
@@ -76,17 +71,51 @@ const updateCards = () => {
     })
 }
 
-const setupCards = () => {
-    // Create new cards based on matrix
-    for(let i = 0; i <= 8; i++){
-        cards.push(createCard(i));
-    }
-
+const attachCardListeners = () => {
     cards.forEach((card, idx) => {
+        if(idx > gameState.game.me.energy) return;
         card.onclick = () => {
-            console.log('clicked', idx)
+            if(gameState.game.selectedCard == idx) return;
             gameState.game.selectedCard = idx;
             updateCards();
+            updateDisplay();
         }
+        // unconstrain otherwise layout will break
+        card.style.maxWidth = 'unset';
     })
+}
+
+const sequentialCreateFromNthCard = (idx) => {
+    if(idx === 9) {
+        attachCardListeners();
+        return
+    }
+    const card = createCard(idx);
+    cards.push(card);
+    setTimeout(() => {
+        const firstChild = card.children[0];
+        firstChild.style.transform = `scale(1)`;
+        if(idx > gameState.game.me.energy) {
+            firstChild.style.opacity = `0.3`;
+            card.style.filter = `brightness(0.7)`;
+            card.style.transform = `rotate(8deg) scale(0.8)`;
+        }
+    }, 10)
+    setTimeout(() => sequentialCreateFromNthCard(idx + 1), 200);
+}
+
+const setupCards = () => {
+    // // Create new cards based on matrix
+    // for(let i = 0; i <= 8; i++){
+    //     cards.push(createCard(i));
+    // }
+
+    // cards.forEach((card, idx) => {
+    //     card.onclick = () => {
+    //         console.log('clicked', idx)
+    //         gameState.game.selectedCard = idx;
+    //         updateCards();
+    //     }
+    // })
+    sequentialCreateFromNthCard(0)
 }
