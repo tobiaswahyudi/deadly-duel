@@ -6,7 +6,7 @@
 **************************************/
 const gameState = {
         // main menu
-        screen: 'game',
+        screen: 'menu',
         menu: {
                 state: "menu-select",
                 rulesOpen: false,
@@ -31,7 +31,7 @@ const gameState = {
                 me: {
                         name: null,
                         hp: 10,
-                        energy: 5,
+                        energy: 10,
                         move: null,
                         wantRematch: null,
                         winCount: 0,
