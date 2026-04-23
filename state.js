@@ -25,7 +25,7 @@ const gameState = {
         },
         // running game
         game: {
-                state: 'make-move',
+                state: 'enter-name',
                 duelNumber: 1,
                 roundNumber: 1,
                 me: {
